@@ -13,14 +13,19 @@ class zR {
 		$srv = array_merge(array('SCRIPT_FILENAME'=>'','QUERY_STRING'=>'','HTTP_ACCEPT_LANGUAGE'=>'','SERVER_PROTOCOL'=>'','HTTPS'=>'','HTTP_HOST'=>'','HTTP_USER_AGENT'=>'','HTTP_ACCEPT'=>'','HTTP_ACCEPT_ENCODING'=>'','REMOTE_ADDR'=>'','SCRIPT_FILENAME'=>'','REQUEST_URI'=>''),$_SERVER);
 
 		$tmp = explode('/',$srv['SCRIPT_FILENAME']); $tmp = array_filter($tmp); $tmp = end($tmp); // .php script
-		list($url,$utm,$get) = $this->utm_param($srv['QUERY_STRING']);
-		$url = str_replace(array('?','=','&','//'),'/',$url);
 
-		// cli
-		if(php_sapi_name() == 'cli-server') { 
-			list($url,$utm,$get) = $this->utm_param($srv['REQUEST_URI']);
-			$url = str_replace(array('?','=','&','//'),'/',$url);			
-		} else {}
+		if(php_sapi_name() == 'cli-server') {
+			$fle = explode('/', str_replace('\\','/',$srv['SCRIPT_FILENAME']));
+			$fle = array_splice($fle,-2,2);
+			$fle = '/'.implode('/',$fle);
+			$url = str_replace($fle,'',$srv['REQUEST_URI']);
+			list($url,$utm,$get) = $this->utm_param($url);
+		} else {
+			list($url,$utm,$get) = $this->utm_param($srv['QUERY_STRING']);
+		}
+
+		$url = str_replace(array('?','=','&','//'),'/',$url);			
+
 		if(isset($_SERVER['argv'])) { $tmp = array_slice($_SERVER['argv'],1); $url.= implode('/',$tmp); $srv['REQUEST_URI'].=$url; } else {}
 		$url = str_replace(array('?','=','&','//'),'/',$url);
 
