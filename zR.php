@@ -5,6 +5,7 @@ namespace za\zR;
 // ザガタ。六 /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 
+#[AllowDynamicProperties]
 class zR {
 	/* Zagata.Request */
 	
@@ -59,8 +60,10 @@ class zR {
 		if(isset($_COOKIE)) { $re = array_merge($re, $_COOKIE); } else {}
 		
 		// _SESSION
-		if(!isset($_SESSION)) { ini_set('session.serialize_handler', 'php'); session_name('zs'); @session_start(); } else {}
-		$re = array_merge($re, $_SESSION);
+		if(!headers_sent()) {
+			if(!isset($_SESSION)) { ini_set('session.serialize_handler', 'php'); session_name('zs'); @session_start(); } else {}
+			$re = array_merge($re, $_SESSION);
+		} else {}
 
 		// host + _GET
 		$tmp = explode('.',$re['host']);
