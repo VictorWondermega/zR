@@ -5,9 +5,10 @@ namespace za\zR;
 // ザガタ。六 /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 
-#[AllowDynamicProperties]
 class zR {
 	/* Zagata.Request */
+	private $za = null;
+	public $n = '';
 	
 	public function proc() {
 		// header('Content-type:text/plain;charset=utf-8');
