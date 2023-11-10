@@ -53,6 +53,7 @@ class zR {
 			'file'=> $srv['SCRIPT_FILENAME'],
 			'rq'=> str_replace('&','&amp;',$srv['REQUEST_URI'])
 		);
+		if(strpos(php_sapi_name(),'cli')!==false) { $re['cli'] = true; } else {}
 		
 		$fle = explode('/', str_replace('\\','/',$re['file']));
 		$re['base'] = '/'.implode('/',array_splice($fle,-2,2)).'?';
