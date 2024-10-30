@@ -63,6 +63,8 @@ class zR {
 		
 		// _SESSION
 		if(!headers_sent()) {
+			$tmp = session_save_path();
+			if(!is_dir($tmp)||(is_dir($tmp)&&!is_writable($tmp))) { $_SESSION = array(); $this->za->msg('err',$this->n.'.proc','bad dir for sessions'); } else {}
 			if(!isset($_SESSION)) { ini_set('session.serialize_handler', 'php'); session_name('zs'); @session_start(); } else {}
 			$re = array_merge($re, $_SESSION);
 		} else {}
